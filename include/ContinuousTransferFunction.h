@@ -26,7 +26,7 @@ using Eigen::VectorXd;
 class ContinuousTransferFunction 
 {
     public:
-        ContinuousTransferFunction(std::string name, double k, VectorXd numerator, VectorXd denominator) : m_name(name), m_k(k), m_denominator(denominator), m_numerator(numerator);
+        ContinuousTransferFunction(std::string name, double k, VectorXd numerator, VectorXd denominator) : m_name(name), m_k(k), m_denominator(denominator), m_numerator(numerator){};
         ContinuousTransferFunction(std::string name, ContinuousTransferFunction severalContinuousTransferFunctions[]);
         ~ContinuousTransferFunction(){};
         
@@ -39,7 +39,7 @@ class ContinuousTransferFunction
         }
         
         std::string getName() {
-            return name;
+            return m_name;
         }
 
         void setNumerator(VectorXd numerator) {
@@ -72,6 +72,6 @@ class ContinuousTransferFunction
         VectorXd m_denominator;   // Denominator Coefficients
         VectorXd cascadePolynomials(VectorXd poly1, VectorXd poly2);
 
-}
+};
 
 #endif // CONTINUOUSTRANSFERFUNCTION_H
