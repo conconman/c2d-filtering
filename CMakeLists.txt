@@ -10,7 +10,8 @@ add_library(src_library
   src/ContinuousTransferFunction 
   src/TransferFunctionDiscretizer
   )
-target_include_directories(src_library PUBLIC "${PROJECT_SOURCE_DIR}/include")
+target_include_directories(src_library PUBLIC "${PROJECT_SOURCE_DIR}/include" "C:/Program FIles (x86)/Eigen3")
+target_link_libraries(src_library PUBLIC Eigen3::Eigen)
 
 # Create basic main executible and link source content to executible.
 add_executable(main src/main.cpp)
