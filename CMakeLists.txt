@@ -34,15 +34,15 @@ FetchContent_MakeAvailable(googletest)
 enable_testing()
 
 add_executable(
-  hello_test
-  tests/hello_test.cpp
+  ContinuousTransferFunctionTest
+  tests/ContinuousTransferFunctionTest.cpp
 )
 target_link_libraries(
-  hello_test
+  ContinuousTransferFunctionTest
   GTest::gtest_main
   src_library
   Eigen3::Eigen
 )
 
 include(GoogleTest)
-gtest_discover_tests(hello_test)
+gtest_discover_tests(ContinuousTransferFunctionTest)

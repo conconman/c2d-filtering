@@ -3,6 +3,7 @@
 
 #include "ContinuousTransferFunction.h"
 #include <Eigen/Dense>
+#include <string>
 
 using Eigen::VectorXd;
 
@@ -34,7 +35,7 @@ class TransferFunctionDiscretizer
         VectorXd getOutputCoefficients() {
             return m_outputCoefficients;
         }
-        VectorXd getName() {
+        std::string getName() {
             return m_name;
         }
 
@@ -45,6 +46,6 @@ class TransferFunctionDiscretizer
         int m_sampleFrequency;
         void buildFilter();
 
-}
+};
 
 #endif // TRANSFERFUNCTIONDISCRETIZER_H
