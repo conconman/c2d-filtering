@@ -3,6 +3,7 @@
 
 #include <string>
 #include <Eigen/Dense>
+#include <iostream>
 
 using Eigen::VectorXd;
 
@@ -26,13 +27,14 @@ using Eigen::VectorXd;
 class ContinuousTransferFunction 
 {
     public:
-        ContinuousTransferFunction(std::string name, double k, VectorXd numerator, VectorXd denominator) : m_name(name), m_k(k), m_denominator(denominator), m_numerator(numerator){};
-        ContinuousTransferFunction(std::string name, ContinuousTransferFunction severalContinuousTransferFunctions[]);
-        ~ContinuousTransferFunction(){};
-        
-        // Cascade two transfer functions
-        ContinuousTransferFunction cascadeTwoTransferFunctions(ContinuousTransferFunction H1, ContinuousTransferFunction H2);
+        ContinuousTransferFunction(){
+         std::cout << "Copy constructor called." << std::endl;
 
+        }; // Default Constructor
+        ContinuousTransferFunction(std::string name, double k, VectorXd numerator, VectorXd denominator) : m_name(name), m_k(k), m_denominator(denominator), m_numerator(numerator){};
+        ContinuousTransferFunction(std::string name, ContinuousTransferFunction severalContinuousTransferFunctions[], int size);
+        ~ContinuousTransferFunction(){}; // Default Destructor
+        
         // Get/setters
         void setName(std::string name) {
             m_name = name;
@@ -71,7 +73,6 @@ class ContinuousTransferFunction
         VectorXd m_numerator;     // Numerator Coefficients
         VectorXd m_denominator;   // Denominator Coefficients
         VectorXd cascadePolynomials(VectorXd poly1, VectorXd poly2);
-
 };
 
 #endif // CONTINUOUSTRANSFERFUNCTION_H

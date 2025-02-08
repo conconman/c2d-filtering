@@ -1,10 +1,13 @@
 #include <gtest/gtest.h>
 #include <Eigen/Dense>
 #include "ContinuousTransferFunction.h"
+#include <memory>
  
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
 
+// Set tolerance on Matlab
+double tolerance = 0.00000000001;
 
 /*
   Check that the numerator and denominator are get/set correctly.
@@ -67,7 +70,84 @@ TEST(ContinuousTransferFunctionTest, NumeratorAndDenominatorSetCorrectlyTest) {
   Test to see if cascaded TFs result in the correct TF when combined.
 */
 TEST(ContinuousTransferFunctionTest, CascadingTFsTest) {
-  ASSERT_TRUE(1.0 == 1.0);
+  /*
+    Construct several transfer functions and combine them into a large one.
+  */
+  std::string name1 = "tf1";
+  double k1 = 5;
+  VectorXd numerator1{4};
+  VectorXd denominator1{5};
+  numerator1 << 1.0, 2.0, 3.0, 5.0;
+  denominator1 << 5.0, 4.0, 3.0, 2.0, 1.0;
+  ContinuousTransferFunction tf1{name1, k1, numerator1, denominator1};
+  std::cout << "Transfer function " << name1 << " constructed." << std::endl;
+
+
+  std::string name2 = "tf2";
+  double k2 = 9;
+  VectorXd numerator2{3};
+  VectorXd denominator2{5};
+  numerator2 << 10.0, 5.0, 5.0;
+  denominator2 << 18.0, 0.1, 1.8, 49.0, 0.0;
+  ContinuousTransferFunction tf2{name2, k2, numerator2, denominator2};
+  std::cout << "Transfer function " << name2 << " constructed." << std::endl;
+
+  std::string name3 = "tf3";
+  double k3 = 1;
+  VectorXd numerator3{5};
+  VectorXd denominator3{9};
+  numerator3 << 9.0, 0.0, 0.0, 45.0, 1.9;
+  denominator3 << 5.0, 4.0, 3.0, 6.0, 10.0, 1.8, 17.0, 9.0, 4.0;
+  ContinuousTransferFunction tf3{name3, k3, numerator3, denominator3};
+  std::cout << "Transfer function " << name3 << " constructed." << std::endl;
+
+
+  // Combine Transfer Functions.
+  std::string name4 = "combinedTF";
+  ContinuousTransferFunction severalContinuousTransferFunctions[3] = {tf1, tf2, tf3};
+  ContinuousTransferFunction combinedTF{name4, severalContinuousTransferFunctions, 3};
+
+  std::cout << "Transfer function " << name4 << " constructed, size : " << 3 << std::endl;
+  std::cout << "combinedTF num : " << combinedTF.getNumerator() << std::endl;
+  std::cout << "combinedTF den : " << combinedTF.getDenominator() << std::endl;
+
+
+  // Set expected values for Combined Transfer Function calculated via MATLAB.
+  double expected_k = k1*k2*k3;
+  VectorXd expected_numerator{10};
+  VectorXd expected_denominator{17}; 
+  expected_numerator <<   90,
+                          225,
+                          405,
+                          1125,
+                          1504,
+                          2.297500000000000e+03,
+                          3.460500000000000e+03,
+                          1.942500000000000e+03,
+                          1201,
+                          47.500000000000000;
+  expected_denominator << 450,
+                          7.225000000000000e+02,
+                          877,
+                          2.453600000000000e+03,
+                          3.777200000000000e+03,
+                          3.764800000000000e+03,
+                          5.786100000000000e+03,
+                          7.455520000000000e+03,
+                          6.205200000000000e+03,
+                          8.413180000000000e+03,
+                          8.146559999999999e+03,
+                          6.361940000000000e+03,
+                          4.019500000000000e+03,
+                          2334,
+                          8.402000000000000e+02,
+                          196,
+                          0;
+
+  // Set assertions so that the expected values from MATLAB are what we get in return.
+  EXPECT_NEAR(expected_k, combinedTF.getGain(), tolerance);
+  EXPECT_TRUE(expected_numerator.isApprox(combinedTF.getNumerator(), tolerance));
+  EXPECT_TRUE(expected_denominator.isApprox(combinedTF.getDenominator(), tolerance));
 }
 
 /*
