@@ -70,9 +70,8 @@ TEST(ContinuousTransferFunctionTest, NumeratorAndDenominatorSetCorrectlyTest) {
   Test to see if cascaded TFs result in the correct TF when combined.
 */
 TEST(ContinuousTransferFunctionTest, CascadingTFsTest) {
-  /*
-    Construct several transfer functions and combine them into a large one.
-  */
+  
+  //Construct several transfer functions and combine them into a large one.
   std::string name1 = "tf1";
   double k1 = 5;
   VectorXd numerator1{4};
@@ -83,7 +82,6 @@ TEST(ContinuousTransferFunctionTest, CascadingTFsTest) {
   denominator1 << 5.0, 4.0, 3.0, 2.0, 1.0;
   ContinuousTransferFunction tf1{name1, k1, numerator1, denominator1};
   std::cout << "Transfer function " << name1 << " constructed." << std::endl;
-
 
   std::string name2 = "tf2";
   double k2 = 9;
@@ -112,11 +110,7 @@ TEST(ContinuousTransferFunctionTest, CascadingTFsTest) {
   std::string name4 = "combinedTF";
   ContinuousTransferFunction severalContinuousTransferFunctions[3] = {tf1, tf2, tf3};
   ContinuousTransferFunction combinedTF{name4, severalContinuousTransferFunctions, 3};
-
-  std::cout << "Transfer function " << name4 << " constructed, size : " << 3 << std::endl;
-  std::cout << "combinedTF num : " << combinedTF.getNumerator() << std::endl;
-  std::cout << "combinedTF den : " << combinedTF.getDenominator() << std::endl;
-
+  std::cout << "Transfer function " << name4 << " constructed." << std::endl;
 
   // Set expected values for Combined Transfer Function calculated via MATLAB.
   double k_expected = k1*k2*k3;
