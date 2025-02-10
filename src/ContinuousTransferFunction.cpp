@@ -28,7 +28,7 @@ ContinuousTransferFunction::ContinuousTransferFunction(std::string name, Continu
 
 VectorXd ContinuousTransferFunction::cascadePolynomials(VectorXd poly1, VectorXd poly2) {
     VectorXd polyOut{poly1.rows() + poly2.rows()-1};
-
+    polyOut.setZero();
     std::cout << "poly1 : " << poly1 << std::endl;
     std::cout << "poly2 : " << poly2 << std::endl;
 

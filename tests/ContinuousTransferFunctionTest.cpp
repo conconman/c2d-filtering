@@ -77,6 +77,8 @@ TEST(ContinuousTransferFunctionTest, CascadingTFsTest) {
   double k1 = 5;
   VectorXd numerator1{4};
   VectorXd denominator1{5};
+  numerator1.setZero();
+  denominator1.setZero();
   numerator1 << 1.0, 2.0, 3.0, 5.0;
   denominator1 << 5.0, 4.0, 3.0, 2.0, 1.0;
   ContinuousTransferFunction tf1{name1, k1, numerator1, denominator1};
@@ -87,6 +89,8 @@ TEST(ContinuousTransferFunctionTest, CascadingTFsTest) {
   double k2 = 9;
   VectorXd numerator2{3};
   VectorXd denominator2{5};
+  numerator2.setZero();
+  denominator2.setZero();
   numerator2 << 10.0, 5.0, 5.0;
   denominator2 << 18.0, 0.1, 1.8, 49.0, 0.0;
   ContinuousTransferFunction tf2{name2, k2, numerator2, denominator2};
@@ -96,6 +100,8 @@ TEST(ContinuousTransferFunctionTest, CascadingTFsTest) {
   double k3 = 1;
   VectorXd numerator3{5};
   VectorXd denominator3{9};
+  numerator3.setZero();
+  denominator3.setZero();
   numerator3 << 9.0, 0.0, 0.0, 45.0, 1.9;
   denominator3 << 5.0, 4.0, 3.0, 6.0, 10.0, 1.8, 17.0, 9.0, 4.0;
   ContinuousTransferFunction tf3{name3, k3, numerator3, denominator3};
@@ -113,10 +119,12 @@ TEST(ContinuousTransferFunctionTest, CascadingTFsTest) {
 
 
   // Set expected values for Combined Transfer Function calculated via MATLAB.
-  double expected_k = k1*k2*k3;
-  VectorXd expected_numerator{10};
-  VectorXd expected_denominator{17}; 
-  expected_numerator <<   90,
+  double k_expected = k1*k2*k3;
+  VectorXd numerator_expected{10};
+  VectorXd denominator_expected{17}; 
+  numerator_expected.setZero();
+  denominator_expected.setZero();
+  numerator_expected <<   90,
                           225,
                           405,
                           1125,
@@ -126,7 +134,7 @@ TEST(ContinuousTransferFunctionTest, CascadingTFsTest) {
                           1.942500000000000e+03,
                           1201,
                           47.500000000000000;
-  expected_denominator << 450,
+  denominator_expected << 450,
                           7.225000000000000e+02,
                           877,
                           2.453600000000000e+03,
@@ -145,9 +153,9 @@ TEST(ContinuousTransferFunctionTest, CascadingTFsTest) {
                           0;
 
   // Set assertions so that the expected values from MATLAB are what we get in return.
-  EXPECT_NEAR(expected_k, combinedTF.getGain(), tolerance);
-  EXPECT_TRUE(expected_numerator.isApprox(combinedTF.getNumerator(), tolerance));
-  EXPECT_TRUE(expected_denominator.isApprox(combinedTF.getDenominator(), tolerance));
+  EXPECT_NEAR(k_expected, combinedTF.getGain(), tolerance);
+  EXPECT_TRUE(numerator_expected.isApprox(combinedTF.getNumerator(), tolerance));
+  EXPECT_TRUE(denominator_expected.isApprox(combinedTF.getDenominator(), tolerance));
 }
 
 /*
